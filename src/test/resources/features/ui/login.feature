@@ -7,3 +7,11 @@ Feature: Business banking UI validation
     Then I should see the welcome message "Welcome Asif"
     And I should see 2 banking accounts
     And the page title should be "Business Banking Portal"
+
+  @ui
+  Scenario: Valid employee logs in using Excel test data
+    Given I open the local business banking login page
+    When I login using Excel test data
+    Then I should see the welcome message "Welcome Asif"
+    And I should see 2 banking accounts
+    And the page title should be "Business Banking Portal"

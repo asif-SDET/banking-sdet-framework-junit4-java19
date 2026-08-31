@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import java.net.URL;
 
 import static org.junit.Assert.assertEquals;
+import com.asif.sdet.banking.utils.ExcelUtils;
 
 public class UiSteps {
 
@@ -29,6 +30,21 @@ public class UiSteps {
             throw new IllegalStateException("Local banking HTML test page was not found");
         }
         driver.get(resource.toExternalForm());
+    }
+    @When("I login using Excel test data")
+    public void loginUsingExcelTestData() {
+
+        ExcelUtils excel = new ExcelUtils(
+                "src/test/resources/testdata/BankingTestData.xls",
+                "LoginData"
+        );
+
+        String username = excel.getCellData(1, 0);
+        String password = excel.getCellData(1, 1);
+
+        loginPage.login(username, password);
+
+        excel.closeWorkbook();
     }
 
     @When("I login with username {string} and password {string}")
@@ -50,4 +66,6 @@ public class UiSteps {
     public void verifyTitle(String expected) {
         assertEquals(expected, accountsPage.getPageTitle());
     }
+
+
 }
