@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Business Banking Portal</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 760px; margin: 40px auto; }
+        label, input, button { display: block; margin: 8px 0; }
+        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; }
+        #dashboard { display: none; }
+        #errorMessage { color: #a00; }
+        #statusBanner { padding: 8px; background: #eee; }
+    </style>
+</head>
+<body>
+<div id="loginPanel">
+    <h1>Business Banking Login</h1>
+    <div id="statusBanner">Test environment is available</div>
+    <label for="username">Username</label>
+    <input id="username" type="text">
+    <label for="password">Password</label>
+    <input id="password" type="password">
+    <button id="loginButton" onclick="login()">Login</button>
+    <div id="errorMessage"></div>
+</div>
+
+<div id="dashboard">
+    <h1>Accounts Dashboard</h1>
+    <h2 id="welcomeMessage">Welcome Asif</h2>
+    <table id="accountsTable">
+        <thead><tr><th>Account</th><th>Type</th><th>Balance</th></tr></thead>
+        <tbody>
+        <tr><td>CHK-1001</td><td>Checking</td><td id="checkingBalance">$1,500.00</td></tr>
+        <tr><td>SAV-1001</td><td>Savings</td><td id="savingsBalance">$3,000.00</td></tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    function login() {
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+        if (user === 'asif' && pass === 'Bank123!') {
+            document.getElementById('loginPanel').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        } else {
+            document.getElementById('errorMessage').innerText = 'Invalid username or password';
+        }
+    }
+</script>
+</body>
+</html>

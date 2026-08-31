@@ -1,0 +1,4 @@
+# Example only. Never commit real credentials.
+db.url=jdbc:sqlserver://YOUR_HOST:1433;databaseName=YOUR_DATABASE;encrypt=true;trustServerCertificate=true
+db.username=YOUR_USERNAME
+db.password=YOUR_PASSWORD

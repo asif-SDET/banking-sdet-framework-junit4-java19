@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.asif.sdet</groupId>
+    <artifactId>banking-sdet-framework-junit4</artifactId>
+    <version>2.0.0-SNAPSHOT</version>
+    <name>Banking SDET Automation Framework - JUnit 4</name>
+    <description>Java 19 / Maven 3.9 compatible BDD framework for UI, API and JDBC testing.</description>
+
+    <properties>
+        <!-- Your installed JDK is Java 19. -->
+        <maven.compiler.release>19</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Conservative dependency versions selected for stability with JDK 19. -->
+        <selenium.version>4.18.1</selenium.version>
+        <cucumber.version>7.15.0</cucumber.version>
+        <junit4.version>4.13.2</junit4.version>
+        <restassured.version>5.4.0</restassured.version>
+        <jackson.version>2.17.2</jackson.version>
+        <h2.version>2.2.224</h2.version>
+        <mssql.jdbc.version>12.6.1.jre11</mssql.jdbc.version>
+        <slf4j.version>2.0.12</slf4j.version>
+
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+        <maven.surefire.plugin.version>3.2.5</maven.surefire.plugin.version>
+
+        <!-- Default intentionally skips browser tests so `mvn clean test` is easy to prove first. -->
+        <cucumber.filter.tags>not @ui and not @wip</cucumber.filter.tags>
+        <browser>chrome</browser>
+        <headless>true</headless>
+    </properties>
+
+    <dependencies>
+        <!-- JUnit 4 only: no JUnit 5 / Jupiter / Platform dependencies. -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit4.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Cucumber BDD with the classic JUnit 4 runner. -->
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-java</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.cucumber</groupId>
+            <artifactId>cucumber-junit</artifactId>
+            <version>${cucumber.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Selenium UI automation / Page Object Model. -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+        <!-- REST Assured + Jackson POJO serialization/deserialization. -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${restassured.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
+        <!-- Local, self-contained JDBC DB used by runnable tests. -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>${h2.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Driver included so the same DatabaseManager can point to Microsoft SQL Server. -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <version>${mssql.jdbc.version}</version>
+        </dependency>
+
+        <!-- Keeps framework console logging readable. -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+            <version>${slf4j.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <release>${maven.compiler.release}</release>
+                    <compilerArgs>
+                        <arg>--add-modules</arg>
+                        <arg>jdk.httpserver</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven.surefire.plugin.version}</version>
+                <configuration>
+                    <useModulePath>false</useModulePath>
+                    <argLine>--add-modules jdk.httpserver</argLine>
+                    <systemPropertyVariables>
+                        <cucumber.filter.tags>${cucumber.filter.tags}</cucumber.filter.tags>
+                        <browser>${browser}</browser>
+                        <headless>${headless}</headless>
+                    </systemPropertyVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>smoke</id>
+            <properties>
+                <cucumber.filter.tags>@smoke and not @ui</cucumber.filter.tags>
+            </properties>
+        </profile>
+        <profile>
+            <id>api</id>
+            <properties>
+                <cucumber.filter.tags>@api</cucumber.filter.tags>
+            </properties>
+        </profile>
+        <profile>
+            <id>db</id>
+            <properties>
+                <cucumber.filter.tags>@db</cucumber.filter.tags>
+            </properties>
+        </profile>
+        <profile>
+            <id>domain</id>
+            <properties>
+                <cucumber.filter.tags>@domain</cucumber.filter.tags>
+            </properties>
+        </profile>
+        <profile>
+            <id>ui</id>
+            <properties>
+                <cucumber.filter.tags>@ui</cucumber.filter.tags>
+            </properties>
+        </profile>
+        <profile>
+            <id>all</id>
+            <properties>
+                <cucumber.filter.tags>not @wip</cucumber.filter.tags>
+            </properties>
+        </profile>
+    </profiles>
+</project>
