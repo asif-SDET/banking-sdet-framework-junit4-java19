@@ -7,3 +7,14 @@ target/
 .DS_Store
 *.log
 *.tmp
+
+# Local/private configuration
+.env
+*.env
+config-local.properties
+config-sqlserver.properties
+
+# Personal test data
+src/test/resources/testdata/*private*
+src/test/resources/testdata/*personal*
+src/test/resources/testdata/*Workout*
