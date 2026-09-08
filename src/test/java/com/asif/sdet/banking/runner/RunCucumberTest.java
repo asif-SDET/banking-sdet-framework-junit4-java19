@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 @CucumberOptions(
         features = "src/test/resources/features",
         glue = "com.asif.sdet.banking",
+        tags = "@ui_read_usernames",
         plugin = {
                 "pretty",
                 "html:target/cucumber-reports/cucumber.html",

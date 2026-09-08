@@ -3,12 +3,15 @@ package com.asif.sdet.banking.steps;
 import com.asif.sdet.banking.driver.DriverManager;
 import com.asif.sdet.banking.page.AccountsPage;
 import com.asif.sdet.banking.page.LoginPage;
+import com.asif.sdet.banking.unit.ExcelUtilsTest;
+import io.cucumber.java.PendingException;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.openqa.selenium.WebDriver;
 
 import java.net.URL;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import com.asif.sdet.banking.utils.ExcelUtils;
@@ -68,4 +71,33 @@ public class UiSteps {
     }
 
 
+    @When("I read all usernames from Excel")
+    public void iReadAllUsernamesFromExcel() {
+        ExcelUtils excel = new ExcelUtils(
+                "src/test/resources/testdata/BankingTestData.xls",
+                "LoginData"
+        );
+
+        List<String> usernames = excel.getColumnData(0);
+
+        System.out.println("Usernames: " + usernames);
+        excel.closeWorkbook();
+    }
+
+    @Then("I read {string} column from {string} sheet in {string}")
+    public void iReadColumnFromSheetIn(String columnName, String sheetName, String filePath) {
+        ExcelUtils excel = new ExcelUtils(
+                "src/test/resources/testdata/" + filePath,
+                sheetName
+        );
+
+        List<String> values =
+                excel.getColumnDataByHeader(sheetName, columnName);
+
+        for (String value : values) {
+            System.out.println(columnName + ": " + value);
+        }
+
+        excel.closeWorkbook();
+    }
 }

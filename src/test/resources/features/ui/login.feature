@@ -15,3 +15,8 @@ Feature: Business banking UI validation
     Then I should see the welcome message "Welcome Asif"
     And I should see 2 banking accounts
     And the page title should be "Business Banking Portal"
+
+    @ui_read_usernames
+  Scenario: Read usernames from Excel
+    When I read all usernames from Excel
+    Then I read "Notes" column from "Shoulders & Biceps" sheet in "BankingTestData.xls"
