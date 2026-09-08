@@ -86,7 +86,7 @@ If you are troubleshooting, **do not start with `-Pall`**. Prove the non-UI fram
 3. When IntelliJ asks, choose **Load Maven Project**.
 4. **File → Project Structure → Project SDK → JDK 19**.
 5. Project language level: **19**.
-6. Settings → Build Tools → Maven → Maven home path: `C:\Users\asifa\apache-maven-3.9.0`.
+6. Settings → Build Tools → Maven → Maven home path: `C:\path\to\apache-maven-3.9.0`.
 7. Maven Runner JRE: **Project JDK (19)**.
 8. Open Maven tool window and click **Reload All Maven Projects**.
 9. Wait until dependencies finish downloading before judging red imports.
